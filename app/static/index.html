@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VietSub Live</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">VietSub Live</p>
+        <h1>Mo video tren iPhone va xem phu de tieng Viet ngay trong player</h1>
+        <p class="lead">
+          Chon video de phat ngay trong Safari hoac Chrome tren iPhone. App se tao subtitle
+          tieng Viet o nen va dua tung cau vao player ngay khi xu ly xong.
+        </p>
+      </section>
+
+      <section class="player-card">
+        <div id="player-stage" class="player-stage is-empty">
+          <video id="video" controls playsinline preload="metadata"></video>
+          <div id="empty-state" class="empty-state">
+            <p class="empty-kicker">Player san sang</p>
+            <h2>Chon mot video de bat dau</h2>
+            <p>Video se phat tren may cua ban, phu de tieng Viet se duoc bo sung dan khi job dang chay.</p>
+          </div>
+          <div id="subtitle-overlay" class="subtitle-overlay is-placeholder">
+            Chon video de bat dau.
+          </div>
+        </div>
+
+        <div class="privacy-note">
+          <span class="privacy-dot"></span>
+          Server chi giu file tam de trich audio roi xoa. Video goc khong duoc luu lau dai.
+        </div>
+      </section>
+
+      <section class="control-card">
+        <form id="upload-form" class="form">
+          <label class="field field-file">
+            <span>Video tren may</span>
+            <input id="file" name="file" type="file" accept="video/*,audio/*" />
+          </label>
+
+          <label class="field">
+            <span>Ngon ngu goc (tuy chon)</span>
+            <input
+              id="source_language"
+              name="source_language"
+              type="text"
+              placeholder="De trong de tu doan, vi du: en, ja, ko"
+            />
+          </label>
+
+          <button id="submit-button" type="submit" disabled>Bat dich tieng Viet</button>
+        </form>
+
+        <p class="microcopy">
+          Muc tieu mac dinh la tieng Viet. Neu video da la tieng Viet, app van tao subtitle dong bo de
+          ban xem va tai xuong.
+        </p>
+      </section>
+
+      <section id="status-card" class="status-card hidden">
+        <div class="status-top">
+          <div>
+            <p class="eyebrow">Trang thai</p>
+            <h2 id="status-title">Dang cho video</h2>
+          </div>
+          <div id="progress-pill" class="pill">0%</div>
+        </div>
+
+        <div class="meter">
+          <div id="progress-bar" class="meter-bar"></div>
+        </div>
+
+        <div class="status-grid">
+          <article class="status-stat">
+            <span>Dong subtitle san sang</span>
+            <strong id="segment-count">0</strong>
+          </article>
+          <article class="status-stat">
+            <span>Ngon ngu nhan dien</span>
+            <strong id="detected-language">Dang cho</strong>
+          </article>
+          <article class="status-stat">
+            <span>Xu ly file tam</span>
+            <strong id="cleanup-status">Dang cho</strong>
+          </article>
+        </div>
+
+        <p id="status-message" class="status-message"></p>
+        <p id="status-error" class="status-error hidden"></p>
+
+        <div id="download-list" class="downloads"></div>
+      </section>
+    </main>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+  </html>

@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: vietsub-live
+    runtime: python
+    plan: free
+    numInstances: 1
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: sh scripts/render_start.sh
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SUBTITLE_TRANSLATION_MODEL
+        value: gpt-5-mini
+      - key: WHISPER_MODEL_SIZE
+        value: base
+      - key: OUTPUT_DIR
+        value: /tmp/vietsub-live/outputs
+      - key: UPLOAD_DIR
+        value: /tmp/vietsub-live/uploads
