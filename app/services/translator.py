@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 
-from openai import OpenAI
+from google import genai
 from pydantic import BaseModel
 
 from app.models import SubtitleLine
@@ -22,10 +22,10 @@ class TranslationBatch(BaseModel):
 class SubtitleTranslator:
     api_key: str
     model: str
-    client: OpenAI = field(init=False)
+    client: genai.Client = field(init=False)
 
     def __post_init__(self) -> None:
-        self.client = OpenAI(api_key=self.api_key)
+        self.client = genai.Client(api_key=self.api_key)
 
     def translate(self, segments: list[SubtitleLine], target_language: str, source_language: str | None) -> list[SubtitleLine]:
         if not segments:
@@ -37,31 +37,26 @@ class SubtitleTranslator:
                 {"index": index, "text": segment.text}
                 for index, segment in enumerate(batch)
             ]
-            response = self.client.responses.parse(
+            response = self.client.models.generate_content(
                 model=self.model,
-                input=[
-                    {
-                        "role": "system",
-                        "content": (
-                            "You are a professional subtitle translator. "
-                            "Translate each subtitle line into the requested target language. "
-                            "Preserve the meaning, keep lines concise for subtitles, "
-                            "do not merge lines, do not split lines, and keep the item count identical."
-                        ),
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            f"Source language: {source_language or 'auto-detected'}\n"
-                            f"Target language: {target_language}\n"
-                            "Return JSON only.\n"
-                            f"Items:\n{json.dumps(batch_payload, ensure_ascii=False)}"
-                        ),
-                    },
-                ],
-                text_format=TranslationBatch,
+                contents=(
+                    "You are a professional subtitle translator.\n"
+                    "Translate each subtitle line into the requested target language.\n"
+                    "Preserve the meaning, keep lines concise for subtitles,\n"
+                    "do not merge lines, do not split lines, and keep the item count identical.\n\n"
+                    f"Source language: {source_language or 'auto-detected'}\n"
+                    f"Target language: {target_language}\n"
+                    "Return JSON only.\n"
+                    f"Items:\n{json.dumps(batch_payload, ensure_ascii=False)}"
+                ),
+                config={
+                    "response_mime_type": "application/json",
+                    "response_json_schema": TranslationBatch.model_json_schema(),
+                },
             )
-            parsed = response.output_parsed
+            if not response.text:
+                raise RuntimeError("Gemini khong tra ve noi dung dich hop le.")
+            parsed = TranslationBatch.model_validate_json(response.text)
             if parsed is None or len(parsed.items) != len(batch):
                 raise RuntimeError("Mo hinh tra ve so dong dich khong khop voi so dong phu de goc.")
 

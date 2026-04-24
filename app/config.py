@@ -15,8 +15,8 @@ class Settings:
     upload_dir: Path = Path(os.getenv("UPLOAD_DIR", "data/uploads"))
     output_dir: Path = Path(os.getenv("OUTPUT_DIR", "data/outputs"))
     whisper_model_size: str = os.getenv("WHISPER_MODEL_SIZE", "small")
-    translation_model: str = os.getenv("SUBTITLE_TRANSLATION_MODEL", "gpt-5-mini")
-    openai_api_key: str | None = os.getenv("OPENAI_API_KEY")
+    translation_model: str = os.getenv("SUBTITLE_TRANSLATION_MODEL", "gemini-2.5-flash")
+    gemini_api_key: str | None = os.getenv("GEMINI_API_KEY")
 
 
 settings = Settings()

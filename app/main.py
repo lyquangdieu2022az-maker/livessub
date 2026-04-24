@@ -185,17 +185,17 @@ def process_job(job_id: str, upload_path: Path) -> None:
             job.target_language,
             stream.language,
         )
-        if translate_needed and not settings.openai_api_key:
+        if translate_needed and not settings.gemini_api_key:
             raise RuntimeError(
-                "Can OPENAI_API_KEY de dich subtitle sang tieng Viet trong che do browser live."
+                "Can GEMINI_API_KEY de dich subtitle sang tieng Viet trong che do browser live."
             )
 
         translator = (
             SubtitleTranslator(
-                api_key=settings.openai_api_key,
+                api_key=settings.gemini_api_key,
                 model=settings.translation_model,
             )
-            if translate_needed and settings.openai_api_key
+            if translate_needed and settings.gemini_api_key
             else None
         )
 
