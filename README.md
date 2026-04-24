@@ -16,7 +16,7 @@ Web app mobile-first de mo video trong trinh duyet iPhone va hien phu de tieng V
 - `FastAPI`: API va giao dien web.
 - `faster-whisper`: speech-to-text local theo stream segment.
 - `imageio-ffmpeg`: tach audio ma khong can cai `ffmpeg` he thong.
-- `OpenAI Responses API`: dich subtitle sang tieng Viet theo batch, giu dung segmentation.
+- `Gemini API`: dich subtitle sang tieng Viet theo batch, giu dung segmentation.
 - `HTML5 video + overlay subtitle`: hien phu de live trong player tren mobile browser.
 
 ## Chay local
@@ -36,7 +36,7 @@ Mo trinh duyet tai [http://127.0.0.1:8000](http://127.0.0.1:8000)
 - Push repo nay len GitHub.
 - Trong Render, chon `New +` -> `Blueprint`.
 - Chon repo vua push. Render se doc file `render.yaml` o root cua repo.
-- O buoc tao service dau tien, nhap `OPENAI_API_KEY` khi Render prompt secret co `sync: false`.
+- O buoc tao service dau tien, nhap `GEMINI_API_KEY` khi Render prompt secret co `sync: false`.
 - Deploy xong, mo URL `.onrender.com` cua service.
 
 Mac dinh trong `render.yaml`:
@@ -49,8 +49,8 @@ Mac dinh trong `render.yaml`:
 
 ## Bien moi truong
 
-- `OPENAI_API_KEY`: can de dich subtitle sang tieng Viet.
-- `SUBTITLE_TRANSLATION_MODEL`: mac dinh `gpt-5-mini`.
+- `GEMINI_API_KEY`: can de dich subtitle sang tieng Viet.
+- `SUBTITLE_TRANSLATION_MODEL`: mac dinh `gemini-2.5-flash`.
 - `WHISPER_MODEL_SIZE`: mac dinh `small`.
 - `UPLOAD_DIR`: thu muc upload tam.
 - `OUTPUT_DIR`: thu muc chua file phu de da xuat.
@@ -60,6 +60,6 @@ Mac dinh trong `render.yaml`:
 - Lan dau transcribe, `faster-whisper` se tai model ve may nen doan mo dau co the cham hon.
 - Day la web player rieng, khong phai extension chen vao moi website video tren iPhone.
 - Video goc duoc tai len server de trich audio, nhung app se xoa ban goc va file audio tam sau khi xu ly.
-- Neu chua co `OPENAI_API_KEY`, che do dich tieng Viet se khong chay duoc.
+- Neu chua co `GEMINI_API_KEY`, che do dich tieng Viet se khong chay duoc.
 - Job hien tai duoc giu trong bo nho RAM; neu dua len production, nen them queue va storage/job state ben ngoai process.
 - Tren Render free plan, service co the cham hoac ngu sau mot thoi gian khong dung. Neu ban muon on dinh hon, nen nang len plan tra phi.
